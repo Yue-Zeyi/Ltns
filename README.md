@@ -64,4 +64,4 @@
 
 * 2022/04/03：发布Ltns主题1.0版本
 
-**感谢**：[Typecho](http://typecho.org/)、[Initial主题
+**感谢**：[Typecho](http://typecho.org/)、[Initial主题](https://www.offodd.com/17.html)
