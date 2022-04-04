@@ -1,6 +1,8 @@
+![](https://pic.zeyiwl.cn/yunimg/20220404085241.jpeg)
+
 ## Ltns
 
-历时两天，大约五六个小时时间，我完成了第一个Typecho主题。
+拖了两天，大约五六个小时时间，我完成了第一个Typecho主题。
 
 有这个主题的想法，源于看见Typecho在长达近五年的断更时间下，Typecho更新了1.2.0版本。
 
