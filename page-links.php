@@ -12,14 +12,16 @@
 <?php Breadcrumbs($this); ?>
 <article class="container postcc">
 <?php $this->content(); ?>
-<ul class="links">
+</article>
+<div class="postlink">
+<ul class="links" >
 <?php if ($this->options->InsideLinksIcon): ?>
 <script>function erroricon(obj){var a=obj.parentNode,i=document.createElement("i");i.appendChild(document.createTextNode("★"));a.removeChild(obj);a.insertBefore(i,a.childNodes[0])}</script>
 <?php endif; ?>
 <?php Links($this->options->InsideLinksSort, $this->options->InsideLinksIcon ? 1 : 0); ?>
 </ul>
 </div>
-</article>
+</div>
 </div>
 <div class="container commentsdd">
 <?php $this->need('comments.php'); ?></div> 

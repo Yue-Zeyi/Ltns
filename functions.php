@@ -7,6 +7,18 @@ if (Helper::options()->GravatarUrl) define('__TYPECHO_GRAVATAR_PREFIX__', Helper
 function themeConfig($form) {
 	$logoUrl = new Typecho_Widget_Helper_Form_Element_Text('logoUrl', NULL, NULL, _t('站点标题 LOGO 地址'), _t('在这里填入一个图片 URL 地址, 以显示网站标题 LOGO'));
 	$form->addInput($logoUrl);
+	
+	$Dbanner = new Typecho_Widget_Helper_Form_Element_Radio('Dbanner', 
+	array(1 => _t('启用'),
+	0 => _t('关闭')),
+	0, _t('顶部Banner图'), _t('默认关闭，启用则会显示顶部Banner图且必须填写下方顶部图信息'));
+	$form->addInput($Dbanner);
+	
+	$bannerUrl = new Typecho_Widget_Helper_Form_Element_Text('bannerUrl', NULL, NULL, _t('顶部Banner图地址'), _t('在这里填入一个图片 URL 地址, 显示顶部banner图（建议高度120）'));
+	$form->addInput($bannerUrl);
+	
+	$bannera = new Typecho_Widget_Helper_Form_Element_Text('bannera', NULL, NULL, _t('顶部Banner图超链接'), _t('在这里填入一个网址, 点击顶部Banner图会跳转到该地址(不填则默认跳转本站)'));
+	$form->addInput($bannera);
 
 	$customTitle = new Typecho_Widget_Helper_Form_Element_Text('customTitle', NULL, NULL, _t('自定义站点标题'), _t('仅用于替换页面头部位置的“标题”显示，和Typecho后台设置的站点名称不冲突，留空则显示默认站点名称'));
 	$form->addInput($customTitle);
@@ -17,16 +29,28 @@ function themeConfig($form) {
 	$favicon = new Typecho_Widget_Helper_Form_Element_Text('favicon', NULL, NULL, _t('Favicon 地址'), _t('在这里填入一个图片 URL 地址, 以添加一个Favicon，留空则不单独设置Favicon'));
 	$form->addInput($favicon);
 
-	$CustomCSS = new Typecho_Widget_Helper_Form_Element_Textarea('CustomCSS', NULL, NULL, _t('自定义样式'), _t('在这里填入你的自定义样式（直接填入css，无需&lt;style&gt;标签）'));
+	$CustomCSS = new Typecho_Widget_Helper_Form_Element_Textarea('CustomCSS', NULL, NULL, _t('自定义CSS样式'), _t('在这里填入你的自定义样式（直接填入css，无需&lt;style&gt;标签）'));
 	$form->addInput($CustomCSS);
 
 	$LicenseInfo = new Typecho_Widget_Helper_Form_Element_Text('LicenseInfo', NULL, NULL, _t('文章版权信息'), _t('填入后将在文章底部显示你填入的版权信息（支持HTML标签，输入数字“0”可关闭显示），留空则默认使用 (CC BY-SA 4.0)国际许可协议。'));
 	$form->addInput($LicenseInfo);
+	
+	$Highlight = new Typecho_Widget_Helper_Form_Element_Radio('Highlight', 
+	array(1 => _t('启用'),
+	0 => _t('关闭')),
+	0, _t('代码高亮'), _t('默认关闭，启用则会渲染页面内代码块'));
+	$form->addInput($Highlight);
+	
+	$Totop = new Typecho_Widget_Helper_Form_Element_Radio('Totop', 
+	array(1 => _t('启用'),
+	0 => _t('关闭')),
+	0, _t('返回顶部'), _t('默认关闭，启用则会显示返回顶部按钮'));
+	$form->addInput($Totop);
 
 	$InsideLinksIcon = new Typecho_Widget_Helper_Form_Element_Radio('InsideLinksIcon', 
 	array(1 => _t('启用'),
 	0 => _t('关闭')),
-	0, _t('显示链接图标（内页）'), _t('默认关闭，启用后内页（链接模板）链接将显示链接图标'));
+	0, _t('显示友链图标（内页）'), _t('默认关闭，启用后友链页面链接将显示链接图标'));
 	$form->addInput($InsideLinksIcon);
 
 	$ICPbeian = new Typecho_Widget_Helper_Form_Element_Text('ICPbeian', NULL, NULL, _t('ICP备案号'), _t('在这里输入ICP备案号,留空则不显示'));

@@ -5,13 +5,22 @@
  *
  * @package Ltns Theme
  * @author 岳泽以
- * @version 1.0
+ * @version 1.1
  * @link https://www.yuezeyi.com
  */
 /*顶部*/ 
  if (!defined('__TYPECHO_ROOT_DIR__')) exit;
 $this->need('header.php');
 ?>
+<?php  if ($this->options->Dbanner):?>
+<div class="wrap banner posty">
+	<div class="o-sliderContainer hasShadow" id="dowebokWrap">
+		<div class="o-slider" id="dowebok">
+			        <a class="o-slider--item" data-image="<?php $this->options->bannerUrl() ?>" href="<?php $this->options->bannera() ?>" target="_blank"></a>
+		</div>
+	</div>
+</div>
+<?php endif; ?>
     <!--文章-->
         <?php while($this->next()): ?>
         <div class="post">    
@@ -31,7 +40,7 @@ $this->need('header.php');
     <div class="container">
     <?php endwhile; ?>
     <section class="list-pager">
-	<?php $this->pageLink('<i class="iconfont icon-left"></i> 上一页'); ?>
+	<?php $this->pageLink('<i class="iconfont icon-left"></i>上一页'); ?>
 	<?php $this->pageLink('下一页<i class="iconfont icon-right"></i>','next'); ?>
 	<div class="clear">
 	</section>
