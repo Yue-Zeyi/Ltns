@@ -52,6 +52,13 @@ function themeConfig($form) {
 	0 => _t('关闭')),
 	0, _t('显示友链图标（内页）'), _t('默认关闭，启用后友链页面链接将显示链接图标'));
 	$form->addInput($InsideLinksIcon);
+	
+	$Emoji = new Typecho_Widget_Helper_Form_Element_Radio('Emoji',
+        array('able' => _t('启用'),
+            'disable' => _t('禁止'),
+        ),
+        'disable', _t('Emoji表情设置'), _t('默认显示Emoji表情，如果你的数据库charset配置不是utf8mb4请禁用'));
+    $form->addInput($Emoji);    	
 
 	$ICPbeian = new Typecho_Widget_Helper_Form_Element_Text('ICPbeian', NULL, NULL, _t('ICP备案号'), _t('在这里输入ICP备案号,留空则不显示'));
 	$form->addInput($ICPbeian);
@@ -165,42 +172,6 @@ function createCatalog($obj) {
 	return $obj.PHP_EOL .getCatalog();
 }
 
-function getCatalog() {
-	global $catalog;
-	$index = '';
-	if ($catalog) {
-		$index = '<ul>'.PHP_EOL;
-		$prev_depth = '';
-		$to_depth = 0;
-		foreach($catalog as $catalog_item) {
-			$catalog_depth = $catalog_item['depth'];
-			if ($prev_depth) {
-				if ($catalog_depth == $prev_depth) {
-					$index .= '</li>'.PHP_EOL;
-				} elseif ($catalog_depth > $prev_depth) {
-					$to_depth++;
-					$index .= PHP_EOL .'<ul>'.PHP_EOL;
-				} else {
-					$to_depth2 = ($to_depth > ($prev_depth - $catalog_depth)) ? ($prev_depth - $catalog_depth) : $to_depth;
-					if ($to_depth2) {
-						for ($i=0; $i<$to_depth2; $i++) {
-							$index .= '</li>'.PHP_EOL .'</ul>'.PHP_EOL;
-							$to_depth--;
-						}
-					}
-					$index .= '</li>'.PHP_EOL;
-				}
-			}
-			$index .= '<li><a href="#cl-'.$catalog_item['count'].'" onclick="Catalogswith()">'.$catalog_item['text'].'</a>';
-			$prev_depth = $catalog_item['depth'];
-		}
-		for ($i=0; $i<=$to_depth; $i++) {
-			$index .= '</li>'.PHP_EOL .'</ul>'.PHP_EOL;
-		}
-	$index = '<div id="catalog-col">'.PHP_EOL .'<b>文章目录</b>'.PHP_EOL .$index.'<script>function Catalogswith(){document.getElementById("catalog-col").classList.toggle("catalog");document.getElementById("catalog").classList.toggle("catalog")}</script>'.PHP_EOL .'</div>'.PHP_EOL;
-	}
-	return $index;
-}
 
 function CommentAuthor($obj, $autoLink = NULL, $noFollow = NULL) {
 	$options = Helper::options();
@@ -291,37 +262,6 @@ function FindContents($val = NULL, $order = 'order', $sort = 'a', $publish = NUL
 	return empty($content) ? NULL : $content;
 }
 
-function Whisper($sidebar = NULL) {
-	$db = Typecho_Db::get();
-	$options = Helper::options();
-	$page = FindContents('page-whisper.php', 'commentsNum', 'd');
-	$p = $sidebar ? 'li' : 'p';
-	$remind = '';
-	if (Typecho_Widget::widget('Widget_User')->pass('editor', true) && (!$page || isset($page[1]))) {
-		$remind = '<'.$p.' class="notice"><b>仅管理员可见: </b>'.($page ? '发现多个"轻语"模板页面，已自动选取内容较多的页面来展示，请删除多余模板页面。' : '未找到"轻语"模板页面，请创建"轻语"模板页面。').'</'.$p.'>'.PHP_EOL;
-	}
-	if ($page) {
-		$page = $page[0];
-		$title = $sidebar ? '<h3 class="widget-title">'.$page['title'].'</h3>' : '<h2 class="post-title"><a href="'.$page['permalink'].'">'.$page['title'].'<span class="more">···</span></a></h2>';
-		$comment = $db->fetchAll($db->select()->from('table.comments')
-			->where('cid = ? AND status = ? AND parent = ?', $page['cid'], 'approved', '0')
-			->order('coid', Typecho_Db::SORT_DESC)
-			->limit(1));
-		if ($comment) {
-			$content = hrefOpen(Markdown::convert($comment[0]['text']));
-			if ($options->AttUrlReplace) {
-				$content = UrlReplace($content);
-			}
-			$content = strip_tags($content, '<p><br><strong><a><img><pre><code>'.$options->commentsHTMLTagAllowed).($sidebar ? PHP_EOL .'<li class="more"><a href="'.$page['permalink'].'">查看更多...</a></li>' : '');
-		} else {
-			$content = '<'.$p.'>暂无内容</'.$p.'>';
-		}
-	} else {
-		$title = $sidebar ? '<h3 class="widget-title">轻语</h3>' : '<h2 class="post-title"><a>轻语</a></h2>';
-		$content = '<'.$p.'>暂无内容</'.$p.'>';
-	}
-	echo $title.PHP_EOL .($sidebar ? '<ul class="widget-list whisper">' : '<div class="post-content">').PHP_EOL .$content.PHP_EOL .$remind.($sidebar ? '</ul>' : '</div>').PHP_EOL;
-}
 
 function Links($sorts = NULL, $icon = 0) {
 	$db = Typecho_Db::get();
@@ -362,14 +302,6 @@ function Links($sorts = NULL, $icon = 0) {
 	echo $link ? $link : '<li>暂无链接</li>'.PHP_EOL;
 }
 
-function Playlist() {
-	$options = Helper::options();
-	$arr = explode(PHP_EOL, $options->MusicUrl);
-	if ($options->MusicSet == 'shuffle') {
-		shuffle($arr);
-	}
-	echo implode(',', $arr);
-}
 
 function compressHtml($html_source) {
 	$chunks = preg_split('/(<!--<nocompress>-->.*?<!--<\/nocompress>-->|<nocompress>.*?<\/nocompress>|<pre.*?\/pre>|<textarea.*?\/textarea>|<script.*?\/script>)/msi', $html_source, -1, PREG_SPLIT_DELIM_CAPTURE);
@@ -418,18 +350,6 @@ function compressHtml($html_source) {
 		$compress .= $c;
 	}
 	return $compress;
-}
-
-function themeFields($layout) {
-	$thumb = new Typecho_Widget_Helper_Form_Element_Text('thumb', NULL, NULL, _t('自定义缩略图'), _t('在这里填入一个图片 URL 地址, 以添加本文的缩略图，若填入纯数字，例如 <b>3</b> ，则使用文章第三张图片作为缩略图（对应位置无图则不显示缩略图），留空则默认不显示缩略图'));
-	$thumb->input->setAttribute('class', 'w-100');
-	$layout->addItem($thumb);
-
-	$catalog = new Typecho_Widget_Helper_Form_Element_Radio('catalog', 
-	array(1 => _t('启用'),
-	0 => _t('关闭')),
-	0, _t('文章目录'), _t('默认关闭，启用则会在文章内显示“文章目录”（若文章内无任何标题，则不显示目录），需要在“控制台-设置外观-文章目录”启用“使用文章内设定”后，方可生效'));
-	$layout->addItem($catalog);
 }
 
 function parseContent($obj){

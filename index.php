@@ -1,7 +1,7 @@
 <?php
 /**
  * 黑白极简、超轻量级文字主题。
- * <ul><li>适配Typecho1.2.0版本</li><li>详细说明：<a href="https://www.yuezeyi.com/ltns.html" target="_blank">Ltns【好久不见】</a></li></ul>
+ * <ul><li>适配Typecho1.2.0版本</li></ul>
  *
  * @package Ltns Theme
  * @author 岳泽以
@@ -48,4 +48,4 @@ $this->need('header.php');
     <div>
         <!--底部-->   
 
-        <?php $this->need('footer.php'); ?>
+<?php $this->need('footer.php'); ?>

@@ -18,9 +18,7 @@
             ), '', ' - '); ?><?php $this->options->title(); if ($this->is('index') && $this->options->subTitle): ?> - <?php $this->options->subTitle(); endif; ?></title>
 
     <!-- 使用url函数转换相关路径 -->
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/style.css'); ?>">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.0/styles/default.min.css">
-    <link rel="stylesheet" href="<?php $this->options->themeUrl('css/entypo.css'); ?>">
+    <link rel="stylesheet" href="<?php $this->options->themeUrl('style.css'); ?>">
     <?php $this->header('generator=&template=&pingback=&xmlrpc=&wlw=&commentReply=&rss1=&rss2=&antiSpam=&atom='); ?>
     <?php if ($this->options->CustomCSS): ?>
     <style type="text/css"><?php $this->options->CustomCSS(); ?></style>

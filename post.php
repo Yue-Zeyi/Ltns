@@ -11,7 +11,12 @@
 </div>
 <article class="container">
     <div class="postcc">
-<?php $this->content(); ?>
+<?php
+    $pattern = '/\<img.*?src\=\"(.*?)\"[^>]*>/i';
+    $replacement = '<a href="$1" data-fancybox="gallery" /><img src="$1" alt="'.$this->title.'" title="点击放大图片"></a>';
+    $content = preg_replace($pattern, $replacement, $this->content);
+    echo $content;
+?>
 <div class="tt-fenge-end">
 </div>
 </div>
